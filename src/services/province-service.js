@@ -8,5 +8,8 @@ export default class ProvinciasService {
     getAll = async () => {
         return await this.ProvinciasRepository.getAll();
     }
+    getById = async (id) => {
+           return await this.ProvinciasRepository.getById(id);
+    }
 
 }
