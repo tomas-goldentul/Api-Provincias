@@ -35,4 +35,15 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/', async (req, res) => {
+    try {
+        const { name, full_name, latitude, longitude, display_order } = req.body;
+        const result = await currentService.create(name, full_name, latitude, longitude, display_order);
+        res.status(StatusCodes.CREATED).json(result);
+    }
+    catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send( 'Error interno del servidor' );
+    }
+});
+
 export default router;

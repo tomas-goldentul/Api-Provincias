@@ -13,4 +13,14 @@ export default class ProvinciasRepository {
         const values = [id];
         return await this.db.queryOne(sql, values);
     }
+    create = async (name, full_name, latitude, longitude, display_order) => {
+        const sql = 'INSERT INTO provinces (name, full_name, latitude, longitude, display_order) VALUES ($1, $2, $3, $4, $5) RETURNING id';
+        const values = [name, full_name, latitude, longitude, display_order];
+        return await this.db.queryOne(sql, values);
+    }
+    getNombre = async (name) => {
+        const sql = 'SELECT * FROM provinces WHERE name = $1';
+        const values = [name];
+        return await this.db.queryOne(sql, values);
+    }
 }   
