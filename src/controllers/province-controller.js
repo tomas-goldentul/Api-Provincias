@@ -16,6 +16,7 @@ router.get('/', async (req, res) => {
         res.status(StatusCodes.OK).json(result);
     }
     catch (error) {
+        console.error("🚨 ERROR EN CONTROLADOR:", error);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Error interno del servidor');
     }
 
@@ -50,4 +51,38 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.put('/', async (req, res) => {
+    try {
+        const { id, name, full_name, latitude, longitude, display_order } = req.body;
+        const order = display_order || null;
+        const result = await currentService.update(id, name, full_name, latitude, longitude, order);
+        res.status(StatusCodes.CREATED).json(result);
+    }
+    catch (error) {
+        if ( error.message.includes("Ya existe") || error.message.includes("caracteres") || error.message.includes("obligatorios")) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+        }
+
+        if (error.message.includes("No existe")) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
+        }
+
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Error interno del servidor' });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;await currentService.delete(id);
+    res.status(StatusCodes.OK).json({
+        message: 'Provincia eliminada correctamente'});
+    }
+    catch (error) {
+        if (error.message.includes("No existe")) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
+        }
+
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Error interno del servidor' });
+    }
+});
 export default router;
