@@ -37,6 +37,7 @@ export default class DbPg {
                 returnEntity = resultPg.rows[0];
             }
         } catch (error) {
+            
         }
         return returnEntity;
     }

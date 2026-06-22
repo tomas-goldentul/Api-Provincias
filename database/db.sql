@@ -1,4 +1,3 @@
---
 -- PostgreSQL database dump
 --
 
@@ -18,27 +17,11 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- TOC entry 4 (class 2615 OID 2200)
--- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
---
-
---CREATE SCHEMA public;
-
-
 ALTER SCHEMA public OWNER TO pg_database_owner;
-
---
--- TOC entry 4786 (class 0 OID 0)
--- Dependencies: 4
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
---
 
 COMMENT ON SCHEMA public IS 'standard public schema';
 
-
 SET default_tablespace = '';
-
 SET default_table_access_method = heap;
 
 --
@@ -52,9 +35,8 @@ CREATE TABLE public."Provinces" (
     full_name character varying,
     latitude numeric,
     longitude numeric,
-    display_order integer NOT NULL
+    display_order integer
 );
-
 
 ALTER TABLE public."Provinces" OWNER TO postgres;
 
@@ -72,10 +54,7 @@ ALTER TABLE public."Provinces" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY 
     CACHE 1
 );
 
-
 --
--- TOC entry 4779 (class 0 OID 16404)
--- Dependencies: 215
 -- Data for Name: Provinces; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -104,28 +83,16 @@ INSERT INTO public."Provinces" OVERRIDING SYSTEM VALUE VALUES (22, 'Santiago del
 INSERT INTO public."Provinces" OVERRIDING SYSTEM VALUE VALUES (23, 'Tierra del Fuego', 'Provincia de Tierra del Fuego, Antártida e Islas del Atlántico Sur', -54.5, -67.0, 23);
 INSERT INTO public."Provinces" OVERRIDING SYSTEM VALUE VALUES (24, 'Tucumán', 'Provincia de Tucumán', -26.916667, -65.25, 24);
 
-
 --
--- TOC entry 4787 (class 0 OID 0)
--- Dependencies: 216
 -- Name: Provinces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
-
 SELECT pg_catalog.setval('public."Provinces_id_seq"', 24, true);
 
-
 --
--- TOC entry 4635 (class 2606 OID 16410)
 -- Name: Provinces Provinces_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
-
 ALTER TABLE ONLY public."Provinces"
     ADD CONSTRAINT "Provinces_pkey" PRIMARY KEY (id);
 
-
--- Completed on 2026-06-19 08:50:59
-
---
--- PostgreSQL database dump complete
---
+SET search_path TO public;
 
