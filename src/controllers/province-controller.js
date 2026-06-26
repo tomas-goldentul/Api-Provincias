@@ -16,12 +16,9 @@ router.get('/', async (req, res) => {
         res.status(StatusCodes.OK).json(result);
     }
     catch (error) {
-        console.error("🚨 ERROR EN CONTROLADOR:", error);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Error interno del servidor');
     }
-
 });
-
 router.get('/:id', async (req, res) => {
     try {
         const id = req.params.id;
@@ -59,29 +56,26 @@ router.put('/', async (req, res) => {
         res.status(StatusCodes.CREATED).json(result);
     }
     catch (error) {
-        if ( error.message.includes("Ya existe") || error.message.includes("caracteres") || error.message.includes("obligatorios")) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+        const msg = error?.message || "Error interno del servidor";
+        if (msg.includes("no existe")) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: msg });
         }
-
-        if (error.message.includes("No existe")) {
-            return res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
-        }
-
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Error interno del servidor' });
+        return res.status(StatusCodes.BAD_REQUEST).json({ error: msg });
     }
 });
 
 router.delete('/:id', async (req, res) => {
     try {
-        const { id } = req.params;await currentService.delete(id);
-    res.status(StatusCodes.OK).json({
-        message: 'Provincia eliminada correctamente'});
+        const { id } = req.params;
+        await currentService.delete(id);
+        res.status(StatusCodes.OK).json({
+            message: 'Provincia eliminada correctamente'
+        });
     }
     catch (error) {
-        if (error.message.includes("No existe")) {
+        if (error.message.includes("no existe")) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
         }
-
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Error interno del servidor' });
     }
 });
